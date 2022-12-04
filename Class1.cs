@@ -18,8 +18,21 @@ namespace AphoNonExclusivePages
                 ItemXmlDataList.instance.GetCardItem(oldId, false).Keywords = diceCardXmlInfo.Keywords;
             }
         }
+        internal static void ReplaceKeypageInfo(LorId oldId, LorId newId)
+        {
+            BookXmlInfo bookXmlInfo = Singleton<BookXmlList>.Instance.GetList().Find((BookXmlInfo x) => x.id == newId);
+            bool flag = Singleton<BookXmlList>.Instance.GetList().Exists((BookXmlInfo x) => x.id == oldId) && bookXmlInfo != null;
+            if (flag)
+            {
+                Singleton<BookXmlList>.Instance.GetData(oldId, true).RangeType = bookXmlInfo.RangeType;
+            }
+        }
         public override void OnInitializeMod()
         {
+            //Change Nemo and Hubert to be ranged, so that they can still use their exclusives
+            ReplaceKeypageInfo(new LorId(250010), new LorId(AphoNonExclusivePages.PackageId, 250010));
+            ReplaceKeypageInfo(new LorId(250016), new LorId(AphoNonExclusivePages.PackageId, 250016));
+
             //IC assorted
             ReplaceCardInfo(new LorId(701001), new LorId(AphoNonExclusivePages.PackageId, 701001));
             ReplaceCardInfo(new LorId(704001), new LorId(AphoNonExclusivePages.PackageId, 704001));
